@@ -4,5 +4,5 @@ class CreateStreamingUrl():
                             password: str, 
                             ip: str) -> str:
 
-        url = "rtsp://{}:{}@{}}".format(username, password, ip)
+        url = "rtsp://{}:{}@{}".format(username, password, ip)
         return url
