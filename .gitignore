@@ -1,2 +1,3 @@
 credentials.json
 pose_estimation/model_weights/yolov7-w6-pose.pt
+object_detection/model_weights/yolov7.pt

@@ -11,6 +11,7 @@ from utils.datasets import letterbox
 from utils.general import non_max_suppression_kpt
 from utils.plots import output_to_keypoint, plot_one_box_kpt, colors
 
+#MPS not working for YOLOv7
 device = "cpu"
 
 class PoseEstimation():
