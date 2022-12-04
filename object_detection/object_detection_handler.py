@@ -4,11 +4,12 @@ sys.path.insert(0, './object_detection')
 import torch
 import numpy as np
 import cv2
+import random
 
 from models.experimental import attempt_load
 from utils.general import non_max_suppression, scale_coords
+from utils.plots import plot_one_box
 
-#MPS working?
 device = "cpu"
 
 from pose_estimation.pose_estimation_handler import PoseEstimation
@@ -33,21 +34,27 @@ class ObjectDetection():
 
             return output_data
 
-    def visualize_predictions(predictions, vis_image, image):
+    def visualize_predictions(predictions, vis_image, model, frame):
+        colors = [[random.randint(0, 255) for _ in range(3)] for _ in model.names]
+        with torch.inference_mode():
         
-        for i, det in enumerate(predictions):
-            print(vis_image.shape)
-            vis_image = vis_image[:, :, 0]
-            print(vis_image.shape)
-            print(image.shape)
-            det[:, :4]  = scale_coords(vis_image.shape, det[:, :4], vis_image.shape).round()
-            #print(det[:, :4])
-        return None
+            for i, det in enumerate(predictions):
+                vis_image = vis_image[:, :, 0]
+                if len(det):
+                    det[:, :4]  = scale_coords(vis_image.shape, det[:, :4], vis_image.shape).round()
+
+                    for *xyxy, conf, cls in reversed(det):
+                        """
+                        Get correct labels
+                        """
+                        plot_one_box(xyxy, frame, label="test", color=colors[int(cls)], line_thickness=1)
+        return frame
+                
 
 
     def detect_objects(frame, model):
         image, vis_image = PoseEstimation.prepare_image_for_prediction(frame)
         preds = ObjectDetection.predict(image, model)
-        out_image = ObjectDetection.visualize_predictions(preds, vis_image, image)
+        out_image = ObjectDetection.visualize_predictions(preds, vis_image, model, frame)
       
-        return None
+        return out_image

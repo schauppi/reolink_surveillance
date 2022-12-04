@@ -32,7 +32,7 @@ if __name__ == "__main__":
         frame_with_pose = PoseEstimation.estimate_pose(frame_cam_1, Pose_Estimation.model)
         frame_with_objects = ObjectDetection.detect_objects(frame_cam_1, Object_Detection.model)
 
-        cv2.imshow("cam", frame_with_pose)
+        cv2.imshow("cam", frame_with_objects)
         if cv2.waitKey(1) & 0xFF == ord("q"):
                 cv2.destroyAllWindows()
                 break
