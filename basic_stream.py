@@ -29,7 +29,6 @@ if __name__ == "__main__":
         Implementation for one Camera
         """
         frame_cam_1 = StreamingHandler.stream(streaming_url_cam_1, cam="CAM1")
-        print(frame_cam_1.shape)
         frame_with_pose = PoseEstimation.estimate_pose(frame_cam_1, Pose_Estimation.model)
         frame_with_objects = ObjectDetection.detect_objects(frame_cam_1, Object_Detection.model)
 

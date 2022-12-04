@@ -64,7 +64,6 @@ class PoseEstimation():
                 for det_index, (*xyxy, conf, cls) in enumerate(reversed(pose[:,:6])):
                     c = int(cls)
                     kpts = pose[det_index, 6:]
-                    print(kpts)
                     plot_one_box_kpt(xyxy, vis_image, label=None, color=colors(c, True), 
                                         line_thickness=3,kpt_label=True, kpts=kpts, steps=3, 
                                         orig_shape=vis_image.shape[:2])
