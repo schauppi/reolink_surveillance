@@ -7,14 +7,11 @@ from object_detection.object_detection_handler import ObjectDetection
 import cv2
 
 if __name__ == "__main__":
-    CredentionHandler()
-    CreateStreamingUrl()
-    StreamingHandler()
 
     """
     Load an Create Instances of the models
     """
-    Pose_Estimation = PoseEstimation()
+    #Pose_Estimation = PoseEstimation()
     Object_Detection = ObjectDetection()
 
 
@@ -29,7 +26,7 @@ if __name__ == "__main__":
         Implementation for one Camera
         """
         frame_cam_1 = StreamingHandler.stream(streaming_url_cam_1, cam="CAM1")
-        frame_with_pose = PoseEstimation.estimate_pose(frame_cam_1, Pose_Estimation.model)
+        #frame_with_pose = PoseEstimation.detect_poses(frame_cam_1, Pose_Estimation.model)
         frame_with_objects = ObjectDetection.detect_objects(frame_cam_1, Object_Detection.model)
 
         cv2.imshow("cam", frame_with_objects)

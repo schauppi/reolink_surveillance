@@ -3,16 +3,15 @@ sys.path.insert(0, './object_detection')
 
 import torch
 import numpy as np
-import cv2
 import random
 
 from models.experimental import attempt_load
-from utils.general import non_max_suppression, scale_coords
-from utils.plots import plot_one_box
+from utils.general import non_max_suppression
 
 device = "cpu"
 
-from pose_estimation.pose_estimation_handler import PoseEstimation
+from handler.image_preparation_handler import ImagePreparation
+from handler.plot_handler import HandlePlot
 
 
 class ObjectDetection():
@@ -25,36 +24,25 @@ class ObjectDetection():
         except:
             print("Failed loading Object Detection Model")
 
+
     def predict(image, model):
         with torch.inference_mode():
-            prediction, _ = model(image)
-            output_data = non_max_suppression(prediction,
-                                            0.25,
-                                            0.65,)
+            pred = model(image[None], augment=False)[0]
 
-            return output_data
+        prediction = non_max_suppression(pred)[0].to(device).numpy()
 
-    def visualize_predictions(predictions, vis_image, model, frame):
-        colors = [[random.randint(0, 255) for _ in range(3)] for _ in model.names]
-        with torch.inference_mode():
-        
-            for i, det in enumerate(predictions):
-                vis_image = vis_image[:, :, 0]
-                if len(det):
-                    det[:, :4]  = scale_coords(vis_image.shape, det[:, :4], vis_image.shape).round()
-
-                    for *xyxy, conf, cls in reversed(det):
-                        """
-                        Get correct labels
-                        """
-                        plot_one_box(xyxy, frame, label="test", color=colors[int(cls)], line_thickness=1)
-        return frame
-                
-
+        if len(prediction) > 0:
+            return prediction
+        else:
+            return None
 
     def detect_objects(frame, model):
-        image, vis_image = PoseEstimation.prepare_image_for_prediction(frame)
-        preds = ObjectDetection.predict(image, model)
-        out_image = ObjectDetection.visualize_predictions(preds, vis_image, model, frame)
-      
-        return out_image
+        image, original_height, original_width = ImagePreparation.prepare_image(frame)
+        prediction = ObjectDetection.predict(image, model)
+        if prediction is not None:
+            prediction = ImagePreparation.resize_object_detection_prediction_output(prediction, original_height, original_width)
+            image_with_boxes = HandlePlot.plot_bounding_boxes(prediction, frame)
+            return image_with_boxes
+        else:
+            return frame
+
