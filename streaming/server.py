@@ -3,6 +3,9 @@ import cv2
 import pickle
 import struct
 
+from object_detection.object_detection_handler import ObjectDetection
+
+yolov7_model = ObjectDetection()
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -21,7 +24,10 @@ while True:
                 print("Connection from", addr)
                 cap = cv2.VideoCapture(0)
                 while(cap.isOpened()):
-                        img, frame = cap.read()
+                        _, frame = cap.read()
+
+                        frame = ObjectDetection.detect_objects(frame, yolov7_model.model)
+                        
                         a = pickle.dumps(frame)
                         message = struct.pack("Q", len(a)) + a
                         client_socket.sendall(message)
