@@ -25,9 +25,9 @@ class ObjectDetection():
             print("Failed loading Object Detection Model")
 
 
-    def predict(image, model):
+    def predict(self, image):
         with torch.inference_mode():
-            pred = model(image[None], augment=False)[0]
+            pred = self.model(image[None], augment=False)[0]
 
         prediction = non_max_suppression(pred)[0].to(device).numpy()
 
@@ -36,9 +36,9 @@ class ObjectDetection():
         else:
             return None
 
-    def detect_objects(frame, model):
+    def detect_objects(self, frame):
         image, original_height, original_width = ImagePreparation.prepare_image(frame)
-        prediction = ObjectDetection.predict(image, model)
+        prediction = self.predict(image)
         if prediction is not None:
             prediction = ImagePreparation.resize_object_detection_prediction_output(prediction, original_height, original_width)
             image_with_boxes = HandlePlot.plot_bounding_boxes(prediction, frame)
