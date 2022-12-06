@@ -18,7 +18,7 @@ class ObjectDetection():
 
     def __init__(self) -> None:
         try:
-            self.model = attempt_load("object_detection/model_weights/yolov7.pt", map_location=torch.device(device))
+            self.model = attempt_load("object_detection/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
             self.model.eval()
             print("Object Detection Model loaded sucessfully")
         except:

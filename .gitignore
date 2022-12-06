@@ -1,4 +1,5 @@
 credentials.json
 pose_estimation/model_weights/yolov7-w6-pose.pt
 object_detection/model_weights/yolov7.pt
+object_detection/model_weights/yolov7-tiny.pt
 alter_vid/cyclist.mp4
