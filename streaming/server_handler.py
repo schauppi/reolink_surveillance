@@ -27,7 +27,7 @@ class JetsonNanoServer():
                                         _, frame = cap.read()
                                         i += 1
                                         print(i)
-                                        if i / 1000 == 0:
+                                        if i % 1000 == 0:
                                                 frame = object_det_instance.detect_objects(frame)
                                         else:
                                                 frame = frame
