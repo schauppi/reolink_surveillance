@@ -8,7 +8,7 @@ import random
 from models.experimental import attempt_load
 from utils.general import non_max_suppression
 
-device = "cpu"
+device = "cuda"
 
 from handler.image_preparation_handler import ImagePreparation
 from handler.plot_handler import HandlePlot
