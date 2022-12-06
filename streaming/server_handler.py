@@ -21,10 +21,16 @@ class JetsonNanoServer():
                         try:
                                 client_socket, addr = server_socket.accept()
                                 print("Connection from", addr)
+                                i = 0
                                 cap = cv2.VideoCapture(0)
                                 while(cap.isOpened()):
                                         _, frame = cap.read()
-                                        frame = object_det_instance.detect_objects(frame)
+                                        i += 1
+                                        print(i)
+                                        if i / 1000 == 0:
+                                                frame = object_det_instance.detect_objects(frame)
+                                        else:
+                                                frame = frame
                                         a = pickle.dumps(frame)
                                         message = struct.pack("Q", len(a)) + a
                                         client_socket.sendall(message)
