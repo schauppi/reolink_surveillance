@@ -29,8 +29,9 @@ class ObjectDetection():
         with torch.inference_mode():
             pred = self.model(image[None], augment=False)[0]
 
-        prediction = non_max_suppression(pred)[0].to(device)
+        prediction = non_max_suppression(pred)[0].to("cpu")
         prediction = prediction.numpy()
+        prediction = prediction.to(device)
 
         if len(prediction) > 0:
             return prediction
