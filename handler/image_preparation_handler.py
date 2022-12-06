@@ -5,7 +5,7 @@ import numpy as np
 
 from object_detection.utils.datasets import letterbox
 
-device = "cpu"
+device = "cuda"
 
 class ImagePreparation():
 
