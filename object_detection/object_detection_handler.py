@@ -41,8 +41,8 @@ class ObjectDetection():
         prediction = self.predict(image)
         if prediction is not None:
             prediction = ImagePreparation.resize_object_detection_prediction_output(prediction, original_height, original_width)
-            image_with_boxes = HandlePlot.plot_bounding_boxes(prediction, frame)
-            return image_with_boxes
+            image_with_boxes, person_counter = HandlePlot.plot_bounding_boxes(prediction, frame)
+            return image_with_boxes, person_counter
         else:
             return frame
 

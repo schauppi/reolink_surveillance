@@ -26,9 +26,9 @@ class JetsonNanoServer():
                                 while(cap.isOpened()):
                                         _, frame = cap.read()
                                         i += 1
-                                        print(i)
+                                        #Check for Objets every 100 Frames
                                         if i % 100 == 0:
-                                                frame = object_det_instance.detect_objects(frame)
+                                                frame, person_counter = object_det_instance.detect_objects(frame)
                                         else:
                                                 frame = frame
                                         a = pickle.dumps(frame)
