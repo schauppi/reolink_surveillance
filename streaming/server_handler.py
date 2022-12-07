@@ -10,8 +10,6 @@ class JetsonNanoServer():
                 message = struct.pack("Q", len(a)) + a
                 client_socket.sendall(message)
 
-
-        
         def start(object_det_instance):
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -35,17 +33,20 @@ class JetsonNanoServer():
                                         _, frame = cap.read()
 
                                         i += 1
-                                        #Check for Objets every 100 Frames
+                                        #Check for Objets every 50 Frames
                                         if i % 50 == 0:
                                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                                 JetsonNanoServer.send_message(frame, client_socket)
                                                 if person_counter > 0:
                                                         while person_counter > 0:
                                                                 _, frame = cap.read()
-                                                                frame, person_counter = object_det_instance.detect_objects(frame)
-                                                                JetsonNanoServer.send_message(frame, client_socket)
-                                                                print("person detected")
-                                                                print("--------")
+                                                                try:
+                                                                        frame, person_counter = object_det_instance.detect_objects(frame)
+                                                                        JetsonNanoServer.send_message(frame, client_socket)
+                                                                        print("person detected")
+                                                                        print("--------")
+                                                                except:
+                                                                        frame = frame
                                                 else:
                                                         _, frame = cap.read()
                                                         JetsonNanoServer.send_message(frame, client_socket)
