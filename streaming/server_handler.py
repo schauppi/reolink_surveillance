@@ -44,12 +44,17 @@ class JetsonNanoServer():
                                                                 _, frame = cap.read()
                                                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                                                 JetsonNanoServer.send_message(frame, client_socket)
+                                                                print("person detected")
+                                                                print("--------")
                                                 else:
                                                         _, frame = cap.read()
                                                         JetsonNanoServer.send_message(frame, client_socket)
+                                                        print("no person")
+                                                        print("--------")
                                         else:
                                                 frame = frame
-                                        print("no person")
+                                                print("no person")
+                                                print("--------")
                                         JetsonNanoServer.send_message(frame, client_socket)
                                         
                                 client_socket.close()
