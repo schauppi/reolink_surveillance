@@ -36,7 +36,7 @@ class JetsonNanoServer():
 
                                         i += 1
                                         #Check for Objets every 100 Frames
-                                        if i % 100 == 0:
+                                        if i % 50 == 0:
                                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                                 JetsonNanoServer.send_message(frame, client_socket)
                                                 if person_counter > 0:
@@ -44,14 +44,12 @@ class JetsonNanoServer():
                                                                 _, frame = cap.read()
                                                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                                                 JetsonNanoServer.send_message(frame, client_socket)
-                                                                print("person detected")
                                                 else:
                                                         _, frame = cap.read()
-                                                        print("no person")
                                                         JetsonNanoServer.send_message(frame, client_socket)
                                         else:
                                                 frame = frame
-                                        
+                                        print("no person")
                                         JetsonNanoServer.send_message(frame, client_socket)
                                         
                                 client_socket.close()
