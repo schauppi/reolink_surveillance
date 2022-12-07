@@ -5,6 +5,12 @@ import struct
 
 class JetsonNanoServer():
 
+        def send_message(frame, client_socket):
+                a = pickle.dumps(frame)
+                message = struct.pack("Q", len(a)) + a
+                client_socket.sendall(message)
+
+
         def start(object_det_instance):
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -16,6 +22,7 @@ class JetsonNanoServer():
                 server_socket.bind(('', port))
                 server_socket.listen(5)
 
+
                 while True:
                         print("Waiting for connections")
                         try:
@@ -25,15 +32,19 @@ class JetsonNanoServer():
                                 cap = cv2.VideoCapture(0)
                                 while(cap.isOpened()):
                                         _, frame = cap.read()
+
+                                        frame, person_counter = object_det_instance.detect_objects(frame)
+
                                         i += 1
                                         #Check for Objets every 100 Frames
                                         if i % 100 == 0:
                                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                         else:
                                                 frame = frame
-                                        a = pickle.dumps(frame)
-                                        message = struct.pack("Q", len(a)) + a
-                                        client_socket.sendall(message)
+
+                                        
+                                        JetsonNanoServer.send_message(frame, client_socket)
+                                        
                                 client_socket.close()
                                 cap.release()
                                 cv2.destroyAllWindows()
