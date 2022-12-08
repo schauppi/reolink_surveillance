@@ -4,6 +4,7 @@ import pickle
 import struct
 import base64
 import imutils
+import time
 
 class JetsonNanoServer():
 
@@ -31,6 +32,7 @@ class JetsonNanoServer():
                                 _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
                                 message = base64.b64encode(buffer)
                                 server_socket.sendto(message,client_addr)
+                                time.sleep(1)
                       
 
 
