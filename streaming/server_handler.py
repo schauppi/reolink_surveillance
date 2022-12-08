@@ -12,8 +12,8 @@ class JetsonNanoServer():
 
         def get_frame_from_camera(cap, img_size):
                 _, frame = cap.read()
-                print(frame)
                 frame = cv2.resize(frame, (img_size))
+                return frame
 
 
         def start(object_det_instance, url, img_size):
