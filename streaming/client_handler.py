@@ -18,18 +18,16 @@ class Client():
         client_socket.sendto(message, (host_ip, port))
 
         while True:
-            try:
-                packet,_ = client_socket.recvfrom(BUFF_SIZE)
-                data = base64.b64decode(packet,' /')
-                npdata = np.fromstring(data,dtype=np.uint8)
-                frame = cv2.imdecode(npdata,1)
-                cv2.imshow("RECEIVING VIDEO",frame)
-                key = cv2.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    client_socket.close()
-                    break
-            except:
+            packet,_ = client_socket.recvfrom(BUFF_SIZE)
+            data = base64.b64decode(packet,' /')
+            npdata = np.fromstring(data,dtype=np.uint8)
+            frame = cv2.imdecode(npdata,1)
+            cv2.imshow("RECEIVING VIDEO",frame)
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
                 client_socket.close()
+                break
+    
          
 
 
