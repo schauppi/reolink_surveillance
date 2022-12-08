@@ -1,8 +1,6 @@
 from handler.credention_handler import CredentionHandler
-from handler.stream_handler import StreamingHandler
 from handler.streaming_url_handler import CreateStreamingUrl
-from pose_estimation.pose_estimation_handler import PoseEstimation
-from object_detection.object_detection_handler import ObjectDetection
+
 from streaming.client_handler import Client
 
 
@@ -23,7 +21,7 @@ def main(jetson_ips):
 
 if __name__ == "__main__":
 
-    jetson_ips = ["192.168.0.146"]
+    jetson_ips = ["192.168.50.210"]
 
     main(jetson_ips)
 

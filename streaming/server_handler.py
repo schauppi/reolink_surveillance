@@ -10,7 +10,7 @@ class JetsonNanoServer():
                 message = struct.pack("Q", len(a)) + a
                 client_socket.sendall(message)
 
-        def start(object_det_instance):
+        def start(object_det_instance, url):
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -28,7 +28,7 @@ class JetsonNanoServer():
                                 client_socket, addr = server_socket.accept()
                                 print("Connection from", addr)
                                 i = 0
-                                cap = cv2.VideoCapture(0)
+                                cap = cv2.VideoCapture(url)
                                 while(cap.isOpened()):
                                         _, frame = cap.read()
 
