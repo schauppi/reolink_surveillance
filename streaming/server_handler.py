@@ -21,18 +21,20 @@ class JetsonNanoServer():
 
                 while True:
                         print("Waiting for connections")
-                        _, client_addr = server_socket.recvfrom(BUFF_SIZE)
-                        print("Got connection from ", client_addr)
-                        while(cap.isOpened()):
-                                _, frame = cap.read()
-                                frame = imutils.resize(frame,width=640)
-                                _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-                                message = base64.b64encode(buffer)
-                                server_socket.sendto(message,client_addr)
+                        try:
+                                _, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                                print("Got connection from ", client_addr)
+                                while(cap.isOpened()):
+                                        _, frame = cap.read()
+                                        frame = imutils.resize(frame,width=640)
+                                        _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+                                        message = base64.b64encode(buffer)
+                                        server_socket.sendto(message,client_addr)
 
-                        server_socket.close()
-                        cap.release()
-                        cv2.destroyAllWindows()
+                        except:
+                                server_socket.close()
+                                cap.release()
+                                cv2.destroyAllWindows()
 
 
                       
