@@ -6,15 +6,6 @@ import base64
 
 class JetsonNanoServer():
 
-        def send_message(frame, client_socket):
-                a = pickle.dumps(frame)
-                message = struct.pack("Q", len(a)) + a
-                client_socket.sendall(message)
-                
-        def get_frame_from_camera(cap, img_size):
-                _, frame = cap.read()
-                frame = cv2.resize(frame, (img_size))
-                return frame
 
         def start(object_det_instance, url, img_size):
 
@@ -28,22 +19,22 @@ class JetsonNanoServer():
                 while True:
                         print("Waiting for connections")
                   
-                        msg, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                        _, client_addr = server_socket.recvfrom(BUFF_SIZE)
                         print("Got connection from ", client_addr)
-                        cap = cv2.VideoCapture(url)
-                        while(cap.isOpened()):
-                                _, frame = cap.read()
-                                frame = cv2.resize(frame, (img_size))
-                                encoded,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-                                message = base64.b64encode(buffer)
-                                server_socket.sendto(message, client_addr)
-                                key = cv2.waitKey(1) & 0xFF
-                                if key == ord("q"):
-                                        server_socket.close()
-                                        break
+                        server_socket.sendto("hello", client_addr)
 
                       
 
+
+"""        def send_message(frame, client_socket):
+                a = pickle.dumps(frame)
+                message = struct.pack("Q", len(a)) + a
+                client_socket.sendall(message)
+                
+        def get_frame_from_camera(cap, img_size):
+                _, frame = cap.read()
+                frame = cv2.resize(frame, (img_size))
+                return frame"""
 
 """
         def start(object_det_instance, url, img_size):
