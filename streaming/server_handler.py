@@ -23,7 +23,7 @@ class JetsonNanoServer():
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
                 port = 10050
                 server_socket.bind(('', port))
-                server_socket.listen(5)
+                #server_socket.listen(5)
 
                 while True:
                         print("Waiting for connections")
