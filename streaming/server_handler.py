@@ -38,7 +38,8 @@ class JetsonNanoServer():
                                 i = 0
                                 #cap = cv2.VideoCapture(url)
                                 cap = VideoStream(src=url, resolution=img_size)
-                                while(cap.isOpened()):
+                                #while(cap.isOpened()):
+                                while True:
                                         frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
 
                                         i += 1
