@@ -13,7 +13,8 @@ class JetsonNanoServer():
                 client_socket.sendall(message)
 
         def get_frame_from_camera(cap, img_size):
-                _, frame = cap.read()
+                #_, frame = cap.read()
+                frame = cap.read()
                 frame = cv2.resize(frame, (img_size))
                 return frame
 
