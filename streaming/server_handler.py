@@ -12,15 +12,16 @@ class JetsonNanoServer():
 
         def get_frame_from_camera(cap, img_size):
                 _, frame = cap.read()
-                frame = cv2.resize(frame, img_size)
+                print(frame)
+                frame = cv2.resize(frame, (img_size))
 
 
         def start(object_det_instance, url, img_size):
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-                host_name = socket.gethostname()
-                host_ip = socket.gethostbyname(host_name)
+                #host_name = socket.gethostname()
+                #host_ip = socket.gethostbyname(host_name)
 
                 port = 10050
                 server_socket.bind(('', port))

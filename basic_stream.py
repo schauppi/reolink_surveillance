@@ -11,10 +11,6 @@ def start_clients(jetson_ips):
 
 
 def main(jetson_ips):
-    username_cam_1, password_cam_1, ip_cam_1  = CredentionHandler.load_credentials(cam = 0)
-    streaming_url_cam_1 = CreateStreamingUrl.create_streaming_url(username_cam_1,
-                                                                    password_cam_1,
-                                                                    ip_cam_1)
 
     start_clients(jetson_ips)
 
