@@ -2,21 +2,51 @@ import socket
 import cv2
 import pickle
 import struct
+import base64
 
 class JetsonNanoServer():
 
         def send_message(frame, client_socket):
-                #a = pickle.dumps(frame)
-                #message = struct.pack("Q", len(a)) + a
-                #client_socket.sendall(message)
-                client_socket.sendall(frame)
-
+                a = pickle.dumps(frame)
+                message = struct.pack("Q", len(a)) + a
+                client_socket.sendall(message)
+                
         def get_frame_from_camera(cap, img_size):
                 _, frame = cap.read()
                 frame = cv2.resize(frame, (img_size))
                 return frame
 
+        def start(object_det_instance, url, img_size):
 
+                BUFF_SIZE = 65536
+                server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
+                port = 10050
+                server_socket.bind(('', port))
+                server_socket.listen(5)
+
+                while True:
+                        print("Waiting for connections")
+                        try:
+                                msg, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                                print("Got connection from ", client_addr)
+                                cap = cv2.VideoCapture(url)
+                                while(cap.isOpened()):
+                                        _, frame = cap.read()
+                                        frame = cv2.resize(frame, (img_size))
+                                        encoded,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+                                        message = base64.b64encode(buffer)
+                                        server_socket.sendto(message, client_addr)
+                                        key = cv2.waitKey(1) & 0xFF
+                                        if key == ord("q"):
+                                                server_socket.close()
+                                                break
+
+                        except:
+                                pass
+
+
+"""
         def start(object_det_instance, url, img_size):
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -70,4 +100,4 @@ class JetsonNanoServer():
                                 cv2.destroyAllWindows()
                         except ConnectionResetError:
                                 client_socket.close()
-                                cap.release()
+                                cap.release()"""
