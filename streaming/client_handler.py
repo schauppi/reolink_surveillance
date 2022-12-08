@@ -18,15 +18,31 @@ class Client():
 
         while True:
             try:
+                frame = client_socket.recv()
+                cv2.imshow(host_ip_str, frame)
+                key = cv2.waitKey(10)
+                if key == 13:
+                    break
+            except:
+                print("Error opening Camera")
+                break
+
+        client_socket.close()
+
+                
+
+
+"""        while True:
+            try:
                 while len(data) < payload_size:
-                    packet = client_socket.recv(4*1024)
+                    packet = client_socket.recv(4*4096)
                     if not packet: break
                     data += packet
                 packet_msg_size = data[:payload_size]
                 data = data[payload_size:]
                 msg_size = struct.unpack("Q", packet_msg_size)[0]
                 while len(data) < msg_size:
-                    data += client_socket.recv(4*1024)
+                    data += client_socket.recv(4*4096)
 
                 frame_data = data[:msg_size]
                 data = data[msg_size:]
@@ -39,4 +55,4 @@ class Client():
                 print("Error opening Camera")
                 break
 
-        client_socket.close()
+        client_socket.close()"""

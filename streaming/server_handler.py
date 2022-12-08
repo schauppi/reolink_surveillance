@@ -3,18 +3,16 @@ import cv2
 import pickle
 import struct
 
-from imutils.video import VideoStream
-
 class JetsonNanoServer():
 
         def send_message(frame, client_socket):
-                a = pickle.dumps(frame)
-                message = struct.pack("Q", len(a)) + a
-                client_socket.sendall(message)
+                #a = pickle.dumps(frame)
+                #message = struct.pack("Q", len(a)) + a
+                #client_socket.sendall(message)
+                client_socket.sendall(frame)
 
         def get_frame_from_camera(cap, img_size):
-                #_, frame = cap.read()
-                frame = cap.read()
+                _, frame = cap.read()
                 frame = cv2.resize(frame, (img_size))
                 return frame
 
@@ -37,10 +35,8 @@ class JetsonNanoServer():
                                 client_socket, addr = server_socket.accept()
                                 print("Connection from", addr)
                                 i = 0
-                                #cap = cv2.VideoCapture(url)
-                                cap = VideoStream(src=url, resolution=img_size)
-                                #while(cap.isOpened()):
-                                while True:
+                                cap = cv2.VideoCapture(url)
+                                while(cap.isOpened()):
                                         frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
 
                                         i += 1
