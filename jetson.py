@@ -19,8 +19,7 @@ def main(img_size):
 
     url = get_streaming_urls()
 
-    #object_det_instance = ObjectDetection()
-    object_det_instance = "test"
+    object_det_instance = ObjectDetection()
     JetsonNanoServer.start(object_det_instance, url, img_size)
 
 if __name__ == "__main__":
