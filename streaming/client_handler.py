@@ -20,7 +20,8 @@ class Client():
         while True:
           
             packet,_ = client_socket.recvfrom(BUFF_SIZE)
-            print(packet)
+            data = base64.b64decode(packet,' /')
+            print(data)
          
 
 
