@@ -9,25 +9,26 @@ class Client():
 
     def start(host_ip):
 
-        BUFF_SIZE = 65536
+        BUFF_SIZE = 4096
         client_socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         client_socket.setsockopt(socket.SOL_SOCKET,socket.SO_RCVBUF,BUFF_SIZE)
         port = 10050
         host_ip_str = str(host_ip)
+        message = b'Hello'
+        client_socket.sendto(message, (host_ip, port))
 
         while True:
-            try:
-                packet,_ = client_socket.recvfrom(BUFF_SIZE)
-                data = base64.b64decode(packet,' /')
-                npdata = np.fromstring(data,dtype=np.uint8)
-                frame = cv2.imdecode(npdata,1)
-                cv2.imshow(host_ip_str, frame)
-                key = cv2.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    client_socket.close()
-                    break
-            except:
-                pass
+          
+            packet,_ = client_socket.recvfrom(BUFF_SIZE)
+            data = base64.b64decode(packet,' /')
+            npdata = np.fromstring(data,dtype=np.uint8)
+            frame = cv2.imdecode(npdata,1)
+            cv2.imshow(host_ip_str, frame)
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
+                client_socket.close()
+                break
+         
 
 
 

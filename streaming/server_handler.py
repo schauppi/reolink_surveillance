@@ -18,7 +18,7 @@ class JetsonNanoServer():
 
         def start(object_det_instance, url, img_size):
 
-                BUFF_SIZE = 65536
+                BUFF_SIZE = 4096
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
                 port = 10050
@@ -27,23 +27,22 @@ class JetsonNanoServer():
 
                 while True:
                         print("Waiting for connections")
-                        try:
-                                msg, client_addr = server_socket.recvfrom(BUFF_SIZE)
-                                print("Got connection from ", client_addr)
-                                cap = cv2.VideoCapture(url)
-                                while(cap.isOpened()):
-                                        _, frame = cap.read()
-                                        frame = cv2.resize(frame, (img_size))
-                                        encoded,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-                                        message = base64.b64encode(buffer)
-                                        server_socket.sendto(message, client_addr)
-                                        key = cv2.waitKey(1) & 0xFF
-                                        if key == ord("q"):
-                                                server_socket.close()
-                                                break
+                  
+                        msg, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                        print("Got connection from ", client_addr)
+                        cap = cv2.VideoCapture(url)
+                        while(cap.isOpened()):
+                                _, frame = cap.read()
+                                frame = cv2.resize(frame, (img_size))
+                                encoded,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+                                message = base64.b64encode(buffer)
+                                server_socket.sendto(message, client_addr)
+                                key = cv2.waitKey(1) & 0xFF
+                                if key == ord("q"):
+                                        server_socket.close()
+                                        break
 
-                        except:
-                                pass
+                      
 
 
 """
