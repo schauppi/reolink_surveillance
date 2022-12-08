@@ -21,7 +21,9 @@ class JetsonNanoServer():
                   
                         _, client_addr = server_socket.recvfrom(BUFF_SIZE)
                         print("Got connection from ", client_addr)
-                        message = base64.b64encode("hello")
+                        string = "hello"
+                        data_bytes = string.encode("utf-8")
+                        message = base64.b64encode(data_bytes)
                         server_socket.sendto(message, client_addr)
 
                       
