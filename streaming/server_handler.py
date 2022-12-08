@@ -18,7 +18,7 @@ class JetsonNanoServer():
 
         def start(object_det_instance, url, img_size):
 
-                BUFF_SIZE = 4096
+                BUFF_SIZE = 65536
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
                 port = 10050
