@@ -10,7 +10,12 @@ class JetsonNanoServer():
                 message = struct.pack("Q", len(a)) + a
                 client_socket.sendall(message)
 
-        def start(object_det_instance, url):
+        def get_frame_from_camera(cap, img_size):
+                _, frame = cap.read()
+                frame = cv2.resize(frame, img_size)
+
+
+        def start(object_det_instance, url, img_size):
                 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -30,7 +35,7 @@ class JetsonNanoServer():
                                 i = 0
                                 cap = cv2.VideoCapture(url)
                                 while(cap.isOpened()):
-                                        _, frame = cap.read()
+                                        frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
 
                                         i += 1
                                         #Check for Objets every 50 Frames
@@ -39,7 +44,7 @@ class JetsonNanoServer():
                                                 JetsonNanoServer.send_message(frame, client_socket)
                                                 if person_counter > 0:
                                                         while person_counter > 0:
-                                                                _, frame = cap.read()
+                                                                frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
                                                                 try:
                                                                         frame, person_counter = object_det_instance.detect_objects(frame)
                                                                         JetsonNanoServer.send_message(frame, client_socket)
@@ -48,7 +53,7 @@ class JetsonNanoServer():
                                                                 except:
                                                                         frame = frame
                                                 else:
-                                                        _, frame = cap.read()
+                                                        frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
                                                         JetsonNanoServer.send_message(frame, client_socket)
                                                         print("no person")
                                                         print("--------")

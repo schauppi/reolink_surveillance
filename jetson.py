@@ -15,14 +15,16 @@ def get_streaming_urls():
     return streaming_url_cam_1
 
 
-def main():
+def main(img_size):
 
     url = get_streaming_urls()
 
     object_det_instance = ObjectDetection()
 
-    JetsonNanoServer.start(object_det_instance, url)
+    JetsonNanoServer.start(object_det_instance, url, img_size)
 
 if __name__ == "__main__":
 
-    main()
+    img_size = (640,640)
+
+    main(img_size)
