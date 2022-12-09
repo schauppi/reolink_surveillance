@@ -27,6 +27,7 @@ class JetsonNanoServer():
                         #i = 0
                         while(cap.isOpened()):  
                                 _, frame = cap.read()
+                                print(frame.shape)
                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                 print(person_counter)
                                 #frame = imutils.resize(frame,width=400)
