@@ -20,6 +20,10 @@ class ObjectDetection():
         try:
             self.model = attempt_load("object_detection/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
             self.model.eval()
+            #warmup
+            image = torch.rand(1, 3, 640, 640).to(device)
+            with torch.inference_mode():
+                self.model(image[None], augment=False)[0]
             print("Object Detection Model loaded sucessfully")
         except:
             print("Failed loading Object Detection Model")
