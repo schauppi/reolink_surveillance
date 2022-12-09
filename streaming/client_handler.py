@@ -27,6 +27,8 @@ class Client():
             if key == ord('q'):
                 client_socket.close()
                 break
+
+        cv2.destroyAllWindows()
     
          
 
