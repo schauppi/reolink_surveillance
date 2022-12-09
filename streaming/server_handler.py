@@ -34,7 +34,7 @@ class JetsonNanoServer():
                                         detection_frame = frame
                                         person_counter = 0
                                 print(person_counter)
-                                frame = imutils.resize(frame,width=400)
+                                #frame = imutils.resize(frame,width=400)
                                 _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
                                 message = base64.b64encode(buffer)
                                 server_socket.sendto(message,client_addr)
