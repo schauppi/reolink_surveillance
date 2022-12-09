@@ -18,9 +18,7 @@ class JetsonNanoServer():
                 server_socket.bind(('', port))
                 #server_socket.listen(5)
 
-                cap = cv2.VideoCapture(url, cv2.CAP_DSHOW)
-                cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+                cap = cv2.VideoCapture(url)
 
                 while True:
                         print("Waiting for connections")    
