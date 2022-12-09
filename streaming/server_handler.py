@@ -28,9 +28,12 @@ class JetsonNanoServer():
                         while(cap.isOpened()):  
                                 _, frame = cap.read()
                                 print(frame.shape)
-                                frame, person_counter = object_det_instance.detect_objects(frame)
+                                try:
+                                        frame, person_counter = object_det_instance.detect_objects(frame)
+                                except ValueError:
+                                        person_counter = 0
                                 print(person_counter)
-                                frame = imutils.resize(frame,width=400)
+                                #frame = imutils.resize(frame,width=400)
                                 _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
                                 message = base64.b64encode(buffer)
                                 server_socket.sendto(message,client_addr)
