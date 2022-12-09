@@ -21,10 +21,10 @@ class JetsonNanoServer():
                 cap = cv2.VideoCapture(url)
 
                 while True:
-                        print("Waiting for connections")    
-                        _, client_addr = server_socket.recvfrom(BUFF_SIZE)
-                        print("Got connection from ", client_addr)
-                        i = 0
+                       # print("Waiting for connections")    
+                        #_, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                        #print("Got connection from ", client_addr)
+                        #i = 0
                         while(cap.isOpened()):  
                                 _, frame = cap.read()
                                 frame, person_counter = object_det_instance.detect_objects(frame)
