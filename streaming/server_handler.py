@@ -28,11 +28,7 @@ class JetsonNanoServer():
                         while(cap.isOpened()): 
                                 _, frame = cap.read()
                                 print(frame.shape)
-                                try:
-                                        detection_frame, person_counter = object_det_instance.detect_objects(frame)
-                                except ValueError:
-                                        detection_frame = frame
-                                        person_counter = 0
+                                detection_frame, person_counter = object_det_instance.detect_objects(frame)
                                 print(person_counter)
                                 #frame = imutils.resize(frame,width=400)
                                 _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
