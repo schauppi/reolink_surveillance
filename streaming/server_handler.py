@@ -21,21 +21,19 @@ class JetsonNanoServer():
                 cap = cv2.VideoCapture(0)
 
                 while True:
-                       # print("Waiting for connections")    
-                        #_, client_addr = server_socket.recvfrom(BUFF_SIZE)
-                        #print("Got connection from ", client_addr)
-                        #i = 0
+                        print("Waiting for connections")    
+                        _, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                        print("Got connection from ", client_addr)
+                        i = 0
                         while(cap.isOpened()):  
                                 _, frame = cap.read()
-                                print(frame.shape)
                                 frame, person_counter = object_det_instance.detect_objects(frame)
                                 print(person_counter)
-                                #frame = imutils.resize(frame,width=400)
-                                #_,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-                                #message = base64.b64encode(buffer)
-                                #server_socket.sendto(message,client_addr)
-                                #time.sleep(1)
-
+                                frame = imutils.resize(frame,width=400)
+                                _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+                                message = base64.b64encode(buffer)
+                                server_socket.sendto(message,client_addr)
+                                time.sleep(1)
 
                 server_socket.close()
                 cap.release()
