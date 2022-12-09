@@ -42,7 +42,6 @@ class ObjectDetection():
 
     def detect_objects(self, frame):
         image, original_height, original_width = ImagePreparation.prepare_image(frame)
-        print(image.shape)
         prediction = self.predict(image)
         if prediction is not None:
             prediction = ImagePreparation.resize_object_detection_prediction_output(prediction, original_height, original_width)
