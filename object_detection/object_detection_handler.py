@@ -21,7 +21,7 @@ class ObjectDetection():
             self.model = attempt_load("object_detection/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
             self.model.eval()
             #warmup
-            image = torch.rand(1, 3, 640, 640).to(device)
+            image = torch.rand(640, 640, 3).permute(2, 0, 1).to(device)
             with torch.inference_mode():
                 self.model(image[None], augment=False)[0]
             print("Object Detection Model loaded sucessfully")
@@ -42,6 +42,7 @@ class ObjectDetection():
 
     def detect_objects(self, frame):
         image, original_height, original_width = ImagePreparation.prepare_image(frame)
+        print(image.shape)
         prediction = self.predict(image)
         if prediction is not None:
             prediction = ImagePreparation.resize_object_detection_prediction_output(prediction, original_height, original_width)
