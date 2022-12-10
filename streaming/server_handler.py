@@ -9,7 +9,7 @@ class Server():
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
                 # bind the socket to a local address
-                sock.bind(('0.0.0.0', 5000))
+                sock.bind(('', 5000))
 
                 while True:
                         
