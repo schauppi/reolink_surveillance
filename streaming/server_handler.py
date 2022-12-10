@@ -33,7 +33,7 @@ class JetsonNanoServer():
                                         message = base64.b64encode(buffer)
                                         server_socket.sendto(message,client_addr)
                                         
-                        except socket.error:
+                        except:
                                 cap.release()
                                 server_socket.close()
 
