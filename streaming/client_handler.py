@@ -48,68 +48,78 @@ class JetsonClient():
         self.frame_queue = Queue()
         self.detected_frame_queue = Queue()
         self.lock = threading.Lock()
+        self.stop_flag = threading.Event()
         self.url = url
         self.server_ip = server_ip
         self.object_det_instance = object_det_instance
 
     def capture_thread(self):
+        while not self.stop_flag.is_set():
+            while True:
+                cap = cv2.VideoCapture(self.url)
 
-        while True:
-            cap = cv2.VideoCapture(self.url)
+                _, frame = cap.read()
 
-            _, frame = cap.read()
+                with self.lock:
+                    self.frame_queue.put(frame)
 
-            with self.lock:
-                self.frame_queue.put(frame)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-        cap.release()
+            cap.release()
 
     def detection_thread(self):
+        while not self.stop_flag.is_set():
+            while True:
+                with self.lock:
+                    if not self.frame_queue.empty():
+                        frame = self.frame_queue.get()
+                    else:
+                        continue
 
-        while True:
-            with self.lock:
-                if not self.frame_queue.empty():
-                    frame = self.frame_queue.get()
-                else:
-                    continue
+                frame, person_counter = self.object_det_instance.detect_objects(frame)
+                print(person_counter)
 
-            frame, person_counter = self.object_det_instance.detect_objects(frame)
-            print(person_counter)
-
-            with self.lock:
-                self.detected_frame_queue.put(frame)
+                with self.lock:
+                    self.detected_frame_queue.put(frame)
 
     def udp_thread(self, client_socket):
-        
-        while True:
-            with self.lock:
-                if not self.detected_frame_queue.empty():
-                    frame = self.detected_frame_queue.get()
-                else:
-                    continue
-
-            _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-            message = base64.b64encode(buffer)
-            client_socket.sendto(message, (self.server_ip, 5000))
-
+        while not self.stop_flag.is_set():
     
-        client_socket.close()
+            while True:
+                with self.lock:
+                    if not self.detected_frame_queue.empty():
+                        frame = self.detected_frame_queue.get()
+                    else:
+                        continue
+
+                _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+                message = base64.b64encode(buffer)
+                client_socket.sendto(message, (self.server_ip, 5000))
+
+        
+            client_socket.close()
             
 
     def start(self):
 
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        capture_thread = threading.Thread(target=JetsonClient.capture_thread, args=(self,))
-        detection_thread = threading.Thread(target=JetsonClient.detection_thread, args=(self,))
-        udp_thread = threading.Thread(target=JetsonClient.udp_thread, args=(self, client_socket))
+        try:
 
-        capture_thread.start()
-        detection_thread.start()
-        udp_thread.start()
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+            capture_thread = threading.Thread(target=JetsonClient.capture_thread, args=(self,))
+            detection_thread = threading.Thread(target=JetsonClient.detection_thread, args=(self,))
+            udp_thread = threading.Thread(target=JetsonClient.udp_thread, args=(self, client_socket))
+
+            capture_thread.start()
+            detection_thread.start()
+            udp_thread.start()
+
+        except KeyboardInterrupt:
+            self.stop_flag.set()
+
+
 
         
 
