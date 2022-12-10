@@ -95,13 +95,13 @@ class JetsonClient():
         client_socket.close()
             
 
-    def start(object_det_instance, url, server_ip):
+    def start(self, object_det_instance, url, server_ip):
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        capture_thread = threading.Thread(target=capture_thread, args=(url,))
-        detection_thread = threading.Thread(target=detection_thread, args=(object_det_instance,))
-        udp_thread = threading.Thread(target=udp_thread, args=(client_socket, server_ip))
+        capture_thread = threading.Thread(target=self.capture_thread, args=(url,))
+        detection_thread = threading.Thread(target=self.detection_thread, args=(object_det_instance,))
+        udp_thread = threading.Thread(target=self.udp_thread, args=(client_socket, server_ip))
 
         capture_thread.start()
         detection_thread.start()
