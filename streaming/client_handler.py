@@ -29,7 +29,7 @@ class Client():
                 break
 
         cv2.destroyAllWindows()
-        server_socket.close()
+        client_socket.close()
     
          
 

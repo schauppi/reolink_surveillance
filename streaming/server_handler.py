@@ -35,6 +35,7 @@ class JetsonNanoServer():
                                         server_socket.sendto(message,client_addr)
 
                         except:
+                                
                                 client_socket.close()
                                 cap.release()
                                 cv2.destroyAllWindows()
