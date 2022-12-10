@@ -1,5 +1,5 @@
 
-from streaming.server_handler import JetsonNanoServer
+from streaming.client_handler import JetsonClient
 from object_detection.object_detection_handler import ObjectDetection
 
 from handler.credention_handler import CredentionHandler
@@ -20,7 +20,7 @@ def main(img_size):
     url = get_streaming_urls()
 
     object_det_instance = ObjectDetection()
-    JetsonNanoServer.start(object_det_instance, url, img_size)
+    JetsonClient.start(object_det_instance, url, img_size)
 
 if __name__ == "__main__":
 

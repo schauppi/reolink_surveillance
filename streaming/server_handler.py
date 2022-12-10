@@ -1,107 +1,34 @@
 import socket
 import cv2
-import pickle
-import struct
 import base64
-import imutils
-import time
+import numpy as np
 
-class JetsonNanoServer():
+class Server():
 
+        def start():
+                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        def start(object_det_instance, url, img_size):
-
-                BUFF_SIZE = 65536
-                server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
-                port = 10050
-                server_socket.bind(('', port))
-
-                cap = cv2.VideoCapture(url)
+                # bind the socket to a local address
+                sock.bind(('0.0.0.0', 5000))
 
                 while True:
-                        try:
-                                print("Waiting for connections")    
-                                client_data, client_addr = server_socket.recvfrom(BUFF_SIZE)
-                                print("Got connection from ", client_addr)
-                                i = 0
-                                while(cap.isOpened()):
-                                        _, frame = cap.read()
-                                        detection_frame, person_counter = object_det_instance.detect_objects(frame)
-                                        print(person_counter)
-                                        _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-                                        message = base64.b64encode(buffer)
-                                        server_socket.sendto(message,client_addr)
-                                        
-                        except:
-                                cap.release()
-                                server_socket.close()
+                        
+                        # receive a frame from the client
+                        frame, addr = sock.recvfrom(1000000)
 
+                        # decode the frame
+                        frame = base64.b64decode(frame,' /')
+                        npdata = np.fromstring(frame,dtype=np.uint8)
+                        frame = cv2.imdecode(npdata,1)
 
+                        # display the frame
+                        cv2.imshow('Recieving Stream...', frame)
 
+                        # check if the user pressed the "q" key
+                        if cv2.waitKey(1) & 0xFF == ord('q'):
+                                break
 
-"""        def send_message(frame, client_socket):
-                a = pickle.dumps(frame)
-                message = struct.pack("Q", len(a)) + a
-                client_socket.sendall(message)
-                
-        def get_frame_from_camera(cap, img_size):
-                _, frame = cap.read()
-                frame = cv2.resize(frame, (img_size))
-                return frame"""
+                        # close the window
+                        cv2.destroyAllWindows()
 
-"""
-        def start(object_det_instance, url, img_size):
-                server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-                #host_name = socket.gethostname()
-                #host_ip = socket.gethostbyname(host_name)
-
-                port = 10050
-                server_socket.bind(('', port))
-                server_socket.listen(5)
-
-
-                while True:
-                        print("Waiting for connections")
-                        try:
-                                client_socket, addr = server_socket.accept()
-                                print("Connection from", addr)
-                                i = 0
-                                cap = cv2.VideoCapture(url)
-                                while(cap.isOpened()):
-                                        frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
-
-                                        i += 1
-                                        #Check for Objets every 50 Frames
-                                        if i % 50 == 0:
-                                                frame, person_counter = object_det_instance.detect_objects(frame)
-                                                JetsonNanoServer.send_message(frame, client_socket)
-                                                if person_counter > 0:
-                                                        while person_counter > 0:
-                                                                frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
-                                                                try:
-                                                                        frame, person_counter = object_det_instance.detect_objects(frame)
-                                                                        JetsonNanoServer.send_message(frame, client_socket)
-                                                                        print("person detected")
-                                                                        print("--------")
-                                                                except:
-                                                                        frame = frame
-                                                else:
-                                                        frame = JetsonNanoServer.get_frame_from_camera(cap, img_size)
-                                                        JetsonNanoServer.send_message(frame, client_socket)
-                                                        print("no person")
-                                                        print("--------")
-                                        else:
-                                                frame = frame
-                                                print("no person")
-                                                print("--------")
-                                        JetsonNanoServer.send_message(frame, client_socket)
-                                        
-                                client_socket.close()
-                                cap.release()
-                                cv2.destroyAllWindows()
-                        except ConnectionResetError:
-                                client_socket.close()
-                                cap.release()"""
+      
