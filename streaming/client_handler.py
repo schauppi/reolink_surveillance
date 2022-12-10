@@ -98,7 +98,7 @@ class JetsonClient():
         client_socket.close()
             
 
-    def start():
+    def start(self):
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
