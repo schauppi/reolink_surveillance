@@ -25,15 +25,15 @@ class JetsonNanoServer():
                                 print("Got connection from ", client_addr)
                                 i = 0
                                 while(cap.isOpened()):
+                                        _, frame = cap.read()
+                                        detection_frame, person_counter = object_det_instance.detect_objects(frame)
+                                        print(person_counter)
+                                        _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+                                        message = base64.b64encode(buffer)
+                                        server_socket.sendto(message,client_addr)
                                         try:
-                                                _, frame = cap.read()
-                                                detection_frame, person_counter = object_det_instance.detect_objects(frame)
-                                                print(person_counter)
-                                                _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
-                                                message = base64.b64encode(buffer)
-                                                server_socket.sendto(message,client_addr)
-                
-                                        except:
+                                                client_data, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                                        except socket.error:
                                                 cap.release()
                                                 server_socket.close()
 
