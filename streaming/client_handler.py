@@ -1,9 +1,11 @@
 import socket
 import cv2
 import base64
+import threading
+from queue import Queue
 
 
-class JetsonClient():
+"""class JetsonClient():
 
     def start(object_det_instance, url, server_ip):
 
@@ -31,4 +33,82 @@ class JetsonClient():
 
         # release the webcam and close the socket
         cap.release()
+        client_socket.close()"""
+
+
+"""
+Capture Thread for open cv - put the frames in a queue
+Detection Thread - get the frames from the queue and do the detection
+UDP Thread - send the frames over UDP
+"""
+
+class JetsonClient():
+
+    def __init__(self):
+        self.frame_queue = Queue()
+        self.detected_frame_queue = Queue()
+        self.lock = threading.Lock()
+
+    def capture_thread(self, url):
+
+        while True:
+            cap = cv2.VideoCapture(url)
+
+            _, frame = cap.read()
+
+            with self.lock:
+                self.frame_queue.put(frame)
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        cap.release()
+
+    def detection_thread(self, object_det_instance):
+
+        while True:
+            with self.lock:
+                if not self.frame_queue.empty():
+                    frame = self.frame_queue.get()
+                else:
+                    continue
+
+            frame, person_counter = object_det_instance.detect_objects(frame)
+
+            with self.lock:
+                self.detected_frame_queue.put(frame)
+
+    def udp_thread(self, client_socket, server_ip):
+        
+        while True:
+            with self.lock:
+                if not self.detected_frame_queue.empty():
+                    frame = self.detected_frame_queue.get()
+                else:
+                    continue
+
+            _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
+            message = base64.b64encode(buffer)
+            client_socket.sendto(message, (server_ip, 5000))
+
+    
         client_socket.close()
+            
+
+    def start(object_det_instance, url, server_ip):
+
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        capture_thread = threading.Thread(target=capture_thread, args=(url,))
+        detection_thread = threading.Thread(target=detection_thread, args=(object_det_instance,))
+        udp_thread = threading.Thread(target=udp_thread, args=(client_socket, server_ip))
+
+        capture_thread.start()
+        detection_thread.start()
+        udp_thread.start()
+
+        
+
+        
+
+    
