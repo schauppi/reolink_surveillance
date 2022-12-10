@@ -78,7 +78,6 @@ class JetsonClient():
                         continue
 
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
-                print(person_counter)
 
                 with self.lock:
                     self.detected_frame_queue.put(frame)
