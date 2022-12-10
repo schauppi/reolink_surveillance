@@ -20,6 +20,7 @@ class JetsonNanoServer():
                 cap = cv2.VideoCapture(url)
 
                 while True:
+                        try:
                                 print("Waiting for connections")    
                                 client_data, client_addr = server_socket.recvfrom(BUFF_SIZE)
                                 print("Got connection from ", client_addr)
@@ -31,11 +32,10 @@ class JetsonNanoServer():
                                         _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
                                         message = base64.b64encode(buffer)
                                         server_socket.sendto(message,client_addr)
-                                        try:
-                                                client_data, client_addr = server_socket.recvfrom(BUFF_SIZE)
-                                        except socket.error:
-                                                cap.release()
-                                                server_socket.close()
+                                        
+                        except socket.error:
+                                cap.release()
+                                server_socket.close()
 
 
 
