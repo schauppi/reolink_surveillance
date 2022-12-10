@@ -102,9 +102,9 @@ class JetsonClient():
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        capture_thread = threading.Thread(target=JetsonClient.capture_thread, args=())
-        detection_thread = threading.Thread(target=JetsonClient.detection_thread, args=())
-        udp_thread = threading.Thread(target=JetsonClient.udp_thread, args=(client_socket))
+        capture_thread = threading.Thread(target=JetsonClient.capture_thread, args=(self,))
+        detection_thread = threading.Thread(target=JetsonClient.detection_thread, args=(self,))
+        udp_thread = threading.Thread(target=JetsonClient.udp_thread, args=(self, client_socket))
 
         capture_thread.start()
         detection_thread.start()
