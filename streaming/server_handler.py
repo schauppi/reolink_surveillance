@@ -27,16 +27,15 @@ class JetsonNanoServer():
                         i = 0
                         while(cap.isOpened()): 
                                 _, frame = cap.read()
-                                print(frame.shape)
                                 detection_frame, person_counter = object_det_instance.detect_objects(frame)
                                 print(person_counter)
-                                #frame = imutils.resize(frame,width=400)
                                 _,buffer = cv2.imencode('.jpg',detection_frame,[cv2.IMWRITE_JPEG_QUALITY,80])
                                 message = base64.b64encode(buffer)
                                 server_socket.sendto(message,client_addr)
                                 
 
                         server_socket.close()
+                        client_addr.close()
                         cap.release()
                         cv2.destroyAllWindows()
 
