@@ -48,5 +48,5 @@ class ObjectDetection():
             image_with_boxes, person_counter = HandlePlot.plot_bounding_boxes(prediction, frame)
             return image_with_boxes, person_counter
         else:
-            return frame
+            return frame, 0
 
