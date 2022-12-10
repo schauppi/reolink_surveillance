@@ -44,15 +44,18 @@ UDP Thread - send the frames over UDP
 
 class JetsonClient():
 
-    def __init__(self):
+    def __init__(self, url, server_ip, object_det_instance):
         self.frame_queue = Queue()
         self.detected_frame_queue = Queue()
         self.lock = threading.Lock()
+        self.url = url
+        self.server_ip = server_ip
+        self.object_det_instance = object_det_instance
 
-    def capture_thread(self, url):
+    def capture_thread(self):
 
         while True:
-            cap = cv2.VideoCapture(url)
+            cap = cv2.VideoCapture(self.url)
 
             _, frame = cap.read()
 
@@ -64,7 +67,7 @@ class JetsonClient():
 
         cap.release()
 
-    def detection_thread(self, object_det_instance):
+    def detection_thread(self):
 
         while True:
             with self.lock:
@@ -73,12 +76,12 @@ class JetsonClient():
                 else:
                     continue
 
-            frame, person_counter = object_det_instance.detect_objects(frame)
+            frame, person_counter = self.object_det_instance.detect_objects(frame)
 
             with self.lock:
                 self.detected_frame_queue.put(frame)
 
-    def udp_thread(self, client_socket, server_ip):
+    def udp_thread(self, client_socket):
         
         while True:
             with self.lock:
@@ -89,7 +92,7 @@ class JetsonClient():
 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
             message = base64.b64encode(buffer)
-            client_socket.sendto(message, (server_ip, 5000))
+            client_socket.sendto(message, (self.server_ip, 5000))
 
     
         client_socket.close()
@@ -99,9 +102,9 @@ class JetsonClient():
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        capture_thread = threading.Thread(target=JetsonClient.capture_thread, args=(url,))
-        detection_thread = threading.Thread(target=JetsonClient.detection_thread, args=(object_det_instance,))
-        udp_thread = threading.Thread(target=JetsonClient.udp_thread, args=(client_socket, server_ip))
+        capture_thread = threading.Thread(target=JetsonClient.capture_thread, args=())
+        detection_thread = threading.Thread(target=JetsonClient.detection_thread, args=())
+        udp_thread = threading.Thread(target=JetsonClient.udp_thread, args=(client_socket))
 
         capture_thread.start()
         detection_thread.start()

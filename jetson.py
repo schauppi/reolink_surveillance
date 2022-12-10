@@ -19,7 +19,8 @@ def main(server_ip):
     url = get_streaming_urls()
 
     object_det_instance = ObjectDetection()
-    JetsonClient.start(object_det_instance=object_det_instance, url=url, server_ip=server_ip)
+    Jetson = JetsonClient(url, server_ip, object_det_instance)
+    Jetson.start()
 
 if __name__ == "__main__":
 
