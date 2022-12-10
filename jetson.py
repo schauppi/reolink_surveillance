@@ -1,4 +1,3 @@
-
 from streaming.client_handler import JetsonClient
 from object_detection.object_detection_handler import ObjectDetection
 
@@ -15,15 +14,15 @@ def get_streaming_urls():
     return streaming_url_cam_1
 
 
-def main(img_size):
+def main(host_ip):
 
     url = get_streaming_urls()
 
     object_det_instance = ObjectDetection()
-    JetsonClient.start(object_det_instance, url, img_size)
+    JetsonClient.start(object_det_instance, url, host_ip)
 
 if __name__ == "__main__":
 
-    img_size = (640,640)
+    host_ip = '192.168.50.177'
 
-    main(img_size)
+    main(host_ip)

@@ -2,9 +2,10 @@ import socket
 import cv2
 import base64
 
+
 class JetsonClient():
 
-    def start(object_det_instance, url, img_size):
+    def start(object_det_instance, url, server_ip):
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -13,14 +14,16 @@ class JetsonClient():
         while True:
 
             # read a frame 
-            ret, frame = cap.read()
+            _, frame = cap.read()
+
+            frame, person_counter = object_det_instance.detect_objects(frame)
 
             # encode the frame 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
             message = base64.b64encode(buffer)
 
             # send the frame over UDP
-            client_socket.sendto(message, ('192.168.50.177', 5000))
+            client_socket.sendto(message, (server_ip, 5000))
 
             # check if the user pressed the "q" key
             if cv2.waitKey(1) & 0xFF == ord('q'):
