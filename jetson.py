@@ -14,15 +14,15 @@ def get_streaming_urls():
     return streaming_url_cam_1
 
 
-def main(host_ip):
+def main(server_ip):
 
     url = get_streaming_urls()
 
     object_det_instance = ObjectDetection()
-    JetsonClient.start(object_det_instance, url, host_ip)
+    JetsonClient.start(object_det_instance, url, server_ip)
 
 if __name__ == "__main__":
 
-    host_ip = '192.168.50.177'
+    server_ip = '192.168.50.177'
 
-    main(host_ip)
+    main(server_ip)
