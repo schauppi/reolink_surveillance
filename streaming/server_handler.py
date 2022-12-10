@@ -23,7 +23,7 @@ class JetsonNanoServer():
                 while True:
                         try:
                                 print("Waiting for connections")    
-                                _, client_addr = server_socket.recvfrom(BUFF_SIZE)
+                                client_socket, client_addr = server_socket.recvfrom(BUFF_SIZE)
                                 print("Got connection from ", client_addr)
                                 i = 0
                                 while(cap.isOpened()): 
@@ -35,7 +35,7 @@ class JetsonNanoServer():
                                         server_socket.sendto(message,client_addr)
 
                         except:
-                                server_socket.close()
+                                client_socket.close()
                                 cap.release()
                                 cv2.destroyAllWindows()
 

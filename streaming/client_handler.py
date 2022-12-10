@@ -18,7 +18,7 @@ class Client():
         client_socket.sendto(message, (host_ip, port))
 
         while True:
-            packet,_ = client_socket.recvfrom(BUFF_SIZE)
+            packet, server_socket = client_socket.recvfrom(BUFF_SIZE)
             data = base64.b64decode(packet,' /')
             npdata = np.fromstring(data,dtype=np.uint8)
             frame = cv2.imdecode(npdata,1)
@@ -29,7 +29,7 @@ class Client():
                 break
 
         cv2.destroyAllWindows()
-        client_socket.close()
+        server_socket.close()
     
          
 
