@@ -1,5 +1,5 @@
 from streaming.client_handler import JetsonClient
-from object_detection.object_detection_handler import ObjectDetection
+from object_detection_v7.object_detection_handler_yolov7 import ObjectDetectionv7
 
 from handler.credention_handler import CredentionHandler
 from handler.streaming_url_handler import CreateStreamingUrl
@@ -18,7 +18,7 @@ def main(server_ip):
 
     url = get_streaming_urls()
 
-    object_det_instance = ObjectDetection()
+    object_det_instance = ObjectDetectionv7()
     Jetson = JetsonClient(url, server_ip, object_det_instance)
     Jetson.start()
 

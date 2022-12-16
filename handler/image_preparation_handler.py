@@ -3,13 +3,13 @@ import torch
 from torchvision import transforms
 import numpy as np
 
-from object_detection.utils.datasets import letterbox
+from object_detection_v7.utils.datasets import letterbox
 
 device = "cuda"
 
 class ImagePreparation():
 
-    def prepare_image(frame, image_size=640):
+    def prepare_image(frame, image_size=640, device="cuda", model=""):
         image = np.asarray(frame)
 
         #Resize
@@ -18,6 +18,11 @@ class ImagePreparation():
 
         image_pt = torch.from_numpy(image).permute(2, 0, 1).to(device)
         image_pt = image_pt.float() / 255.0
+
+        if model == "yolov5":
+            image_pt = image_pt.unsqueeze(0)
+        else:
+            pass
 
         return image_pt, original_height, original_width
 
