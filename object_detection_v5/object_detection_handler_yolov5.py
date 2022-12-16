@@ -14,7 +14,7 @@ from handler.image_preparation_handler import ImagePreparation
 
 device = "mps"
 
-model = torch.hub.load('', 'custom', path='object_detection_v5/model_weights/yolov5s.pt', source='local')
+model = torch.hub.load('', 'custom', path='model_weights/yolov5s.pt', source='local')
 model.to(device)
 print("loaded")
 
