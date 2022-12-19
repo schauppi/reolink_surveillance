@@ -14,7 +14,7 @@ class Server():
                 while True:
                         
                         # receive a frame from the client
-                        frame, addr = sock.recvfrom(1000000000)
+                        frame, addr = sock.recvfrom(10000)
 
                         # decode the frame
                         frame = base64.b64decode(frame,' /')

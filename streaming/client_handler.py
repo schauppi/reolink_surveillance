@@ -24,6 +24,7 @@ class JetsonClient():
             _, frame = cap.read()
 
             frame, person_counter = self.object_det_instance.detect_objects(frame)
+            print(frame.shape)
 
             # encode the frame 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
