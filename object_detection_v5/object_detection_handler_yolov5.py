@@ -17,7 +17,7 @@ class ObjectDetectionv5():
 
         def __init__(self) -> None:
                 #try:
-                self.model = torch.hub.load('', model='custom', path='model_weights/yolov5s.pt', source='local')
+                self.model = torch.hub.load('', model='custom', path='/model_weights/yolov5s.pt', source='local')
                 self.model.to(device)
                 self.model.eval()
                 #warmup
