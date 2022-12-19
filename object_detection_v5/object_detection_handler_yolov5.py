@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, './object_detection_v5')
-#sys.path.append('../')
+sys.path.append('../')
 
 import torch
 import numpy as np
