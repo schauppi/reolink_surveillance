@@ -25,6 +25,6 @@ def main(server_ip):
 
 if __name__ == "__main__":
 
-    server_ip = '192.168.50.210'
+    server_ip = '192.168.50.177'
 
     main(server_ip)
