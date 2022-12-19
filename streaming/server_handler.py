@@ -11,6 +11,11 @@ class Server():
                 # bind the socket to a local address
                 sock.bind(('', 5000))
 
+                frame_counter = 0
+                tick_count = 0
+
+                tick_count = cv2.getTickCount()
+
                 while True:
                         
                         # receive a frame from the client
@@ -20,6 +25,10 @@ class Server():
                         frame = base64.b64decode(frame,' /')
                         npdata = np.fromstring(frame,dtype=np.uint8)
                         frame = cv2.imdecode(npdata,1)
+
+                        frame_counter += 1
+                        elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
+                        cv2.putText(frame, "FPS Server: " + str(frame_counter / elapsed_time), (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
                         # display the frame
                         cv2.imshow('Recieving Stream...', frame)
