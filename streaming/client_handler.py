@@ -7,25 +7,30 @@ from queue import Queue
 
 class JetsonClient():
 
-    def start(object_det_instance, url, server_ip):
+    def __init__(self, url, server_ip, object_det_instance):
+        self.url = url
+        self.server_ip = server_ip
+        self.object_det_instance = object_det_instance
+
+    def start(self):
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        cap = cv2.VideoCapture(url)
+        cap = cv2.VideoCapture(self.url)
 
         while True:
 
             # read a frame 
             _, frame = cap.read()
 
-            frame, person_counter = object_det_instance.detect_objects(frame)
+            frame, person_counter = self.object_det_instance.detect_objects(frame)
 
             # encode the frame 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
             message = base64.b64encode(buffer)
 
             # send the frame over UDP
-            client_socket.sendto(message, (server_ip, 5000))
+            client_socket.sendto(message, (self.server_ip, 5000))
 
             # check if the user pressed the "q" key
             if cv2.waitKey(1) & 0xFF == ord('q'):
