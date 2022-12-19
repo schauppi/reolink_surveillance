@@ -9,7 +9,7 @@ import cv2
 
 from handler.image_preparation_handler import ImagePreparation
 from utils.general import non_max_suppression
-from models.experimental import attempt_load
+from object_detection_v5.models.experimental import attempt_load
 from handler.plot_handler import HandlePlot
 
 device = "cuda"
