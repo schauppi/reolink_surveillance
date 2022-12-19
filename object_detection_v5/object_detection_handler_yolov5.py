@@ -19,6 +19,7 @@ class ObjectDetectionv5():
                 try:
                         self.model = torch.hub.load('', 'custom', path='model_weights/yolov5s.pt', source='local')
                         self.model.to(device)
+                        print("loaded")
                         self.model.eval()
                         #warmup
                         image = torch.rand(1, 3, 640, 640).to(device)
