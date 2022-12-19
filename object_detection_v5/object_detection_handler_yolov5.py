@@ -17,18 +17,17 @@ device = "cuda"
 class ObjectDetectionv5():
 
         def __init__(self) -> None:
-                #try:
-                #self.model = torch.hub.load('', model='custom', path='/model_weights/yolov5s.pt', source='local')
-                self.model = attempt_load('object_detection_v5/model_weights/yolov5n.pt', device=device)
-                self.model.to(device)
-                self.model.eval()
-                #warmup
-                image = torch.rand(1, 3, 640, 640).to(device)
-                with torch.inference_mode():
-                        self.model(image)
-                        print("Object Detection Model loaded sucessfully")
-                #except:
-                 #       print("Failed loading Object Detection Model")
+                try:
+                        self.model = attempt_load('object_detection_v5/model_weights/yolov5n.pt', device=device)
+                        self.model.to(device)
+                        self.model.eval()
+                        #warmup
+                        image = torch.rand(1, 3, 640, 640).to(device)
+                        with torch.inference_mode():
+                                self.model(image)
+                                print("Object Detection Model loaded sucessfully")
+                except:
+                       print("Failed loading Object Detection Model")
 
         def predict(self, image):
                 with torch.inference_mode():
