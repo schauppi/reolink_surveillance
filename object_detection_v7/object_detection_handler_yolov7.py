@@ -17,16 +17,16 @@ from handler.plot_handler import HandlePlot
 class ObjectDetectionv7():
 
     def __init__(self) -> None:
-        try:
-            self.model = attempt_load("object_detection_v7/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
-            self.model.eval()
-            #warmup
-            image = torch.rand(640, 640, 3).permute(2, 0, 1).to(device)
-            with torch.inference_mode():
-                self.model(image[None], augment=False)[0]
-            print("Object Detection Model loaded sucessfully")
-        except:
-            print("Failed loading Object Detection Model")
+        #try:
+        self.model = attempt_load("object_detection_v7/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
+        self.model.eval()
+        #warmup
+        image = torch.rand(640, 640, 3).permute(2, 0, 1).to(device)
+        with torch.inference_mode():
+            self.model(image[None], augment=False)[0]
+        print("Object Detection Model loaded sucessfully")
+        #except:
+         #   print("Failed loading Object Detection Model")
 
 
     def predict(self, image):
