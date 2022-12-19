@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, './object_detection_v5')
-#sys.path.append('../')
+sys.path.append('../')
 
 import torch
 import numpy as np
@@ -17,7 +17,7 @@ class ObjectDetectionv5():
 
         def __init__(self) -> None:
                 #try:
-                self.model = torch.hub.load('', model='custom', path='object_detection_v5/model_weights/yolov5s.pt', source='local', hubconf_path='object_detection_v5/hubconf.py')
+                self.model = torch.hub.load('', model='custom', path='model_weights/yolov5s.pt', source='local')
                 self.model.to(device)
                 self.model.eval()
                 #warmup
@@ -25,8 +25,8 @@ class ObjectDetectionv5():
                 with torch.inference_mode():
                         self.model(image)
                         print("Object Detection Model loaded sucessfully")
-                """except:
-                        print("Failed loading Object Detection Model")"""
+                #except:
+                 #       print("Failed loading Object Detection Model")
 
         def predict(self, image):
                 with torch.inference_mode():
@@ -51,9 +51,9 @@ class ObjectDetectionv5():
                         return frame, 0
 
 
-
-"""model = torch.hub.load('', 'custom', path='model_weights/yolov5s.pt', source='local')
-model.to(device)
+"""
+model = torch.hub.load('', 'custom', path='model_weights/yolov5s.pt', source='local')
+model.to("mps")
 print("loaded")
 
 cap = cv2.VideoCapture(0)
