@@ -18,7 +18,7 @@ class ObjectDetectionv7():
 
     def __init__(self) -> None:
         try:
-            self.model = attempt_load("object_detection/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
+            self.model = attempt_load("object_detection_v7/model_weights/yolov7-tiny.pt", map_location=torch.device(device))
             self.model.eval()
             #warmup
             image = torch.rand(640, 640, 3).permute(2, 0, 1).to(device)

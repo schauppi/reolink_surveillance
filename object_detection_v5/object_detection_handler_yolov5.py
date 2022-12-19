@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, './object_detection_v5')
-#sys.path.append('../')
+sys.path.append('../')
 
 import torch
 import numpy as np
@@ -17,7 +17,7 @@ class ObjectDetectionv5():
 
         def __init__(self) -> None:
                 #try:
-                self.model = torch.hub.load('', 'custom', path='model_weights/yolov5s.pt', source='local')
+                self.model = torch.hub.load('', 'custom', path='object_detection_v5/model_weights/yolov5s.pt', source='local')
                 self.model.to(device)
                 self.model.eval()
                 #warmup
