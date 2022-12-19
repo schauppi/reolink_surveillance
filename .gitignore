@@ -4,4 +4,5 @@ object_detection_v7/model_weights/yolov7.pt
 object_detection_v7/model_weights/yolov7-tiny.pt
 object_detection_v5/model_weights/yolov5s.pt
 object_detection_v5/model_weights/yolov5s6.pt
+object_detection_v5/model_weights/yolov5n.pt
 alter_vid/cyclist.mp4
