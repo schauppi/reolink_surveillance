@@ -9,7 +9,7 @@ import cv2
 
 from handler.image_preparation_handler import ImagePreparation
 from utils.general import non_max_suppression
-from object_detection_v5.models.experimental import attempt_load
+from models.experimental import attempt_load
 from handler.plot_handler import HandlePlot
 
 device = "cuda"
@@ -19,7 +19,7 @@ class ObjectDetectionv5():
         def __init__(self) -> None:
                 #try:
                 #self.model = torch.hub.load('', model='custom', path='/model_weights/yolov5s.pt', source='local')
-                self.model = attempt_load('/model_weights/yolov5s.pt', map_location=torch.device(device))
+                self.model = attempt_load('object_detection_v5/model_weights/yolov5n.pt', map_location=torch.device(device))
                 self.model.to(device)
                 self.model.eval()
                 #warmup
