@@ -5,7 +5,7 @@ import threading
 from queue import Queue
 
 
-"""class JetsonClient():
+class JetsonClient():
 
     def start(object_det_instance, url, server_ip):
 
@@ -33,7 +33,7 @@ from queue import Queue
 
         # release the webcam and close the socket
         cap.release()
-        client_socket.close()"""
+        client_socket.close()
 
 
 """
@@ -42,7 +42,7 @@ Detection Thread - get the frames from the queue and do the detection
 UDP Thread - send the frames over UDP
 """
 
-class JetsonClient():
+"""class JetsonClient():
 
     def __init__(self, url, server_ip, object_det_instance):
         self.frame_queue = Queue()
@@ -116,7 +116,7 @@ class JetsonClient():
 
         except KeyboardInterrupt:
             self.stop_flag.set()
-
+"""
 
 
         
