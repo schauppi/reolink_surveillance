@@ -50,3 +50,4 @@ class ObjectDetectionv7():
         else:
             return frame, 0
 
+
