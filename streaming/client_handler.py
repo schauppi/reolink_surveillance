@@ -18,12 +18,23 @@ class JetsonClient():
 
         cap = cv2.VideoCapture(self.url)
 
+        frame_counter = 0
+        tick_count = 0
+
+        tick_count = cv2.getTickCount()
+
         while True:
 
             # read a frame 
             _, frame = cap.read()
 
             frame, person_counter = self.object_det_instance.detect_objects(frame)
+
+            frame_counter += 1
+            elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
+
+            fps = frame_counter / elapsed_time
+            cv2.putText(frame, "FPS: " + str(fps), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
             # encode the frame 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
