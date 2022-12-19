@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, './object_detection_v5')
-sys.path.append('../')
+#sys.path.append('../')
 sys.path.append('./object_detection_v5/hubconf.py')
 
 print(sys.path)
