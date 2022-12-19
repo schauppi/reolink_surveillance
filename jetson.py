@@ -19,7 +19,7 @@ def main(server_ip):
 
     url = get_streaming_urls()
 
-    object_det_instance = ObjectDetectionv7()
+    object_det_instance = ObjectDetectionv5()
     Jetson = JetsonClient(url, server_ip, object_det_instance)
     Jetson.start()
 
