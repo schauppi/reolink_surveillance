@@ -1,5 +1,5 @@
 from streaming.client_handler import JetsonClient
-from object_detection_v7.object_detection_handler_yolov7 import ObjectDetectionv7
+#from object_detection_v7.object_detection_handler_yolov7 import ObjectDetectionv7
 from object_detection_v5.object_detection_handler_yolov5 import ObjectDetectionv5
 
 from handler.credention_handler import CredentionHandler
