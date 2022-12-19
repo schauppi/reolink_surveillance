@@ -30,7 +30,7 @@ class JetsonClient():
             message = base64.b64encode(buffer)
 
             # send the frame over UDP
-            client_socket.sendto(message, (self.server_ip, 5000))
+            client_socket.sendto(message, (self.server_ip, 1000000))
 
             # check if the user pressed the "q" key
             if cv2.waitKey(1) & 0xFF == ord('q'):
