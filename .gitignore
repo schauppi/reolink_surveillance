@@ -2,6 +2,6 @@ credentials.json
 pose_estimation/model_weights
 object_detection_v7/model_weights
 object_detection_v5/model_weights
-yolo_trt/model_weights
-yolo_trt/onnx_export
+onnx_export/model_weights
+onnx_export/onnx_export
 alter_vid/cyclist.mp4
