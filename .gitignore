@@ -1,8 +1,7 @@
 credentials.json
-pose_estimation/model_weights/yolov7-w6-pose.pt
-object_detection_v7/model_weights/yolov7.pt
-object_detection_v7/model_weights/yolov7-tiny.pt
-object_detection_v5/model_weights/yolov5s.pt
-object_detection_v5/model_weights/yolov5s6.pt
-object_detection_v5/model_weights/yolov5n.pt
+pose_estimation/model_weights
+object_detection_v7/model_weights
+object_detection_v5/model_weights
+yolo_trt/model_weights
+yolo_trt/onnx_export
 alter_vid/cyclist.mp4
