@@ -31,12 +31,10 @@ class JetsonClient():
             _, frame_cam_1 = cap_cam_1.read()
             _, frame_cam_2 = cap_cam_2.read()
 
-            frame = cv2.hconcat([frame_cam_1, frame_cam_2])
-
             if self.object_det_instance is not "None":
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
             elif self.object_det_instance is "None":
-                frame = frame
+                frame = frame_cam_1
 
             frame_counter += 1
             elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
