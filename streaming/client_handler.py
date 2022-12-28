@@ -17,7 +17,8 @@ class JetsonClient():
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        cap = cv2.VideoCapture(self.url_cam_1)
+        cap_cam_1 = cv2.VideoCapture(self.url_cam_1)
+        cap_cam_2 = cv2.VideoCapture(self.url_cam_2)
 
         frame_counter = 0
         tick_count = 0
@@ -27,12 +28,13 @@ class JetsonClient():
         while True:
 
             # read a frame 
-            _, frame = cap.read()
+            _, frame_cam_1 = cap_cam_1.read()
+            _, frame_cam_2 = cap_cam_2.read()
 
             if self.object_det_instance is not "None":
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
             elif self.object_det_instance is "None":
-                frame = frame
+                frame = frame_cam_1
 
             frame_counter += 1
             elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
