@@ -37,7 +37,7 @@ class JetsonClient():
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
             elif self.object_det_instance is "None":
                 frame = frame_cam_1
-                frame = cv2.resize(frame, (640, 640))
+                frame = cv2.resize(frame, (300, 300))
 
             frame_counter += 1
             elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
