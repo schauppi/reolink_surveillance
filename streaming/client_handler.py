@@ -29,9 +29,9 @@ class JetsonClient():
             # read a frame 
             _, frame = cap.read()
 
-            if self.object_det_instance is not None:
+            if self.object_det_instance is not "None":
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
-            else:
+            elif self.object_det_instance is "None":
                 frame = frame
 
             frame_counter += 1
