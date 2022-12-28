@@ -10,8 +10,8 @@ args = parser.parse_args()
 
 
 def get_streaming_urls():
-    username_cam_1, password_cam_1, ip_cam_1  = CredentionHandler.load_credentials(cam = 0)
-    username_cam_2, password_cam_2, ip_cam_2  = CredentionHandler.load_credentials(cam = 1)
+    username_cam_1, password_cam_1, ip_cam_1  = CredentionHandler.load_credentials(cam = 1)
+    username_cam_2, password_cam_2, ip_cam_2  = CredentionHandler.load_credentials(cam = 2)
     streaming_url_cam_1 = CreateStreamingUrl.create_streaming_url(username_cam_1,
                                                                     password_cam_1,
                                                                     ip_cam_1)
