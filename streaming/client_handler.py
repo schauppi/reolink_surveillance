@@ -36,7 +36,7 @@ class JetsonClient():
             if self.object_det_instance is not "None":
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
             elif self.object_det_instance is "None":
-                frame = frame_cam_1
+                frame = frame
                 frame = cv2.resize(frame, (300, 300))
 
             frame_counter += 1
