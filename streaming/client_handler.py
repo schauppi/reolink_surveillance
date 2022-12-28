@@ -31,7 +31,7 @@ class JetsonClient():
             _, frame_cam_1 = cap_cam_1.read()
             _, frame_cam_2 = cap_cam_2.read()
 
-            frame = cv2.merge((frame_cam_1, frame_cam_2))
+            frame = cv2.hconcat([frame_cam_1, frame_cam_2])
 
             if self.object_det_instance is not "None":
                 frame, person_counter = self.object_det_instance.detect_objects(frame)
@@ -42,7 +42,7 @@ class JetsonClient():
             elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
 
             fps = frame_counter / elapsed_time
-            #cv2.putText(frame, "FPS Jetson: " + str(fps), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            cv2.putText(frame, "FPS Jetson: " + str(fps), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
             # encode the frame 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
