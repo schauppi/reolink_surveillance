@@ -28,7 +28,7 @@ def main(server_ip, parser_arguments):
     url_cam1, url_cam2 = get_streaming_urls()
 
     if parser_arguments == "None":
-        object_det_instance = None
+        object_det_instance = "None"
     elif parser_arguments == "yolov5":
         from object_detection_v5.object_detection_handler_yolov5 import ObjectDetectionv5
         object_det_instance = ObjectDetectionv5()
