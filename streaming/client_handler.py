@@ -7,8 +7,9 @@ from queue import Queue
 
 class JetsonClient():
 
-    def __init__(self, url, server_ip, object_det_instance):
-        self.url = url
+    def __init__(self, url_cam_1, url_cam_2, server_ip, object_det_instance):
+        self.url_cam_1 = url_cam_1
+        self.url_cam_2 = url_cam_2
         self.server_ip = server_ip
         self.object_det_instance = object_det_instance
 
@@ -16,7 +17,7 @@ class JetsonClient():
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        cap = cv2.VideoCapture(self.url)
+        cap = cv2.VideoCapture(self.url_cam_1)
 
         frame_counter = 0
         tick_count = 0
@@ -28,7 +29,10 @@ class JetsonClient():
             # read a frame 
             _, frame = cap.read()
 
-            frame, person_counter = self.object_det_instance.detect_objects(frame)
+            if self.object_det_instance is not None:
+                frame, person_counter = self.object_det_instance.detect_objects(frame)
+            else:
+                frame = frame
 
             frame_counter += 1
             elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
