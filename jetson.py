@@ -36,7 +36,7 @@ def main(server_ip, parser_arguments):
         from object_detection_v7.object_detection_handler_yolov7 import ObjectDetectionv7
         object_det_instance = ObjectDetectionv7()
 
-    Jetson = JetsonClient(url_cam1, server_ip, object_det_instance)
+    Jetson = JetsonClient(url_cam1, url_cam2, server_ip, object_det_instance)
     Jetson.start()
 
 if __name__ == "__main__":
