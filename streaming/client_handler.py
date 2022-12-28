@@ -42,7 +42,7 @@ class JetsonClient():
             elapsed_time = (cv2.getTickCount() - tick_count) / cv2.getTickFrequency()
 
             fps = frame_counter / elapsed_time
-            cv2.putText(frame, "FPS Jetson: " + str(fps), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            #cv2.putText(frame, "FPS Jetson: " + str(fps), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
             # encode the frame 
             _,buffer = cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,80])
@@ -56,7 +56,8 @@ class JetsonClient():
                 break
 
         # release the webcam and close the socket
-        cap.release()
+        cap_cam_1.release()
+        cap_cam_2.release()
         client_socket.close()
 
 
