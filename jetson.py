@@ -20,9 +20,6 @@ def get_streaming_urls():
                                                                     password_cam_2,
                                                                     ip_cam_2)
 
-    print(streaming_url_cam_1)
-    print(streaming_url_cam_2)
-
     return streaming_url_cam_1, streaming_url_cam_2
 
 
